@@ -53,7 +53,7 @@ ficha.get('/ficha/buscarPorId/:id',async(req, res) => {
     //viene en el body (payload) del request
     let datosFormulario = {
       nombre: req.body.nombre,
-      fechainicio: req.body.fechainicio,
+      fechainicio: req.body.fechaInicio,
       fechaFinal: req.body.fechaFinal,
       estado:req.body.estado
     }
@@ -63,6 +63,61 @@ ficha.get('/ficha/buscarPorId/:id',async(req, res) => {
     //falta validar la validación de la data
     let consulta = "insert into ficha  set ?";
     let [resultado] = await dbconn.query(consulta, [datosFormulario]);
+     res.send({
+      estado: "ok",
+      data: resultado,
+    });
+  } catch (error) {
+     res.status(500).send({
+      estado: "error",
+      data: error.code + "=>" + error.message, // code envia el error detallado desde node
+    });
+   }
+ }) 
+
+
+
+   ficha.post('/ficha/editar',async(req, res) => {
+  try { 
+    //recibir la data enviada desde el formulario
+    //viene en el body (payload) del request
+    let id=req.body.id;
+    let datosFormulario = {
+      nombre: req.body.nombre,
+      fechainicio: req.body.fechaInicio,
+      fechaFinal: req.body.fechaFinal,
+      estado:req.body.estado
+    }
+    //console.log(id);
+    //pendiente
+
+    //falta validar la validación de la data
+    let consulta = "update ficha  set ? where id = ?";
+    let [resultado] = await dbconn.query(consulta, [datosFormulario,id]);
+     res.send({
+      estado: "ok",
+      data: resultado,
+    });
+  } catch (error) {
+     res.status(500).send({
+      estado: "error",
+      data: error.code + "=>" + error.message, // code envia el error detallado desde node
+    });
+   }
+ }) 
+
+
+    ficha.post('/ficha/eliminar',async(req, res) => {
+  try { 
+    //recibir la data enviada desde el formulario
+    //viene en el body (payload) del request
+    let id=req.body.id;
+    //console.log(id);
+    //pendiente
+
+    //falta validar la validación de la data
+    let consulta = "update ficha  set estado = 0 where id = ?";
+    let [resultado] = await dbconn.query(consulta, [id]);
      res.send({
       estado: "ok",
       data: resultado,
