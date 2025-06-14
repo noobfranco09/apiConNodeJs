@@ -7,7 +7,7 @@ const ficha = express.Router();
 ficha.get("/ficha/listartodos", async (req, res) => {
   try {
     //consulta
-    let consulta = "SELECT * from ficha;";
+    let consulta = "SELECT * from ficha where estado = 1;";
     // ejecutamos la consulta y guardamos el resultado en una arreglo de objetos
     let [resultado] = await dbconn.query(consulta);
     // respuesta enviada desde el servidor
@@ -107,11 +107,11 @@ ficha.get('/ficha/buscarPorId/:id',async(req, res) => {
  }) 
 
 
-    ficha.post('/ficha/eliminar',async(req, res) => {
+    ficha.put('/ficha/eliminar/:id',async(req, res) => {
   try { 
     //recibir la data enviada desde el formulario
     //viene en el body (payload) del request
-    let id=req.body.id;
+    let id=req.params.id;
     //console.log(id);
     //pendiente
 
